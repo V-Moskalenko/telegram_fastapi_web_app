@@ -54,7 +54,7 @@ pip install -r requirements.txt
 - Администратор может видеть все заявки пользователей и отправлять на отработку "Заявки в работе"
 
 <p>
-<img src="/readme_img/6.jpg" width="494" height="640"/>
+<img src="/readme_img/6.jpg" width="434" height="640"/>
 <img src="/readme_img/7.jpg" width="356" height="640"/>
 </p>
 
