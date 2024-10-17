@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка на коммерческое предложение</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="icon" href="data:;base64,=">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    {% block styles %}
+    <link rel="stylesheet" href="../static/css/issue.css">
+    {% endblock %}
+
+
+</head>
+<body>
+<div class="container">
+    <img src="../static/company_logo.png" alt="Логотип компании" id="company-logo">
+    <h3>ЗАЯВКА НА КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ</h3>
+    <form id="application-form" action="/submit_application" method="POST">
+        <!-- Поля ввода для пользователя -->
+        <div class="input-group">
+            <label for="user_name">Имя пользователя</label>
+            <input type="text" id="user_name" name="user_name" required>
+        </div>
+        <div class="input-group">
+            <label for="company_name">Наименование компании</label>
+            <input type="text" id="company_name" name="company_name" required>
+        </div>
+        <div class="input-group">
+            <label for="phone_number">Номер телефона</label>
+            <input type="text" id="phone_number" name="phone_number" pattern="^\+7\d{10}$|^8\d{10}$" required placeholder="+7XXXXXXXXXX или 8XXXXXXXXXX">
+        </div>
+        <div class="input-group">
+            <label for="email">Электронная почта</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <!-- Блок услуг -->
+        <div id="services-container">
+            <div class="service-block">
+                <div class="input-group">
+                    <label for="${newId}-training_type">Выберите вид обучения:</label>
+                    <select id="${newId}-training_type" class="training-type" onchange="loadProgramsForType(this)">
+                        <option value="">-- Выберите вид обучения --</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <!-- Выпадающий список для программ обучения -->
+                    <label for="${newId}-training_program">Выберите программу обучения:</label>
+                    <select id="${newId}-training_program" class="training-program" disabled>
+                        <option value="">-- Сначала выберите вид обучения --</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="training_rank">Разряд (опционально)</label>
+                    <input type="text" id="training_rank" name="training_rank">
+                </div>
+                <div class="input-group">
+                    <label for="people_count">Количество человек</label>
+                    <input type="number" id="people_count" name="people_count" min="1" required>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="user_id" value="user_id">
+        <div class="form-buttons" id="form-buttons">
+            <button type="button" class="add-service-btn" id="add-service">Добавить услугу</button>
+            <button type="submit" class="submit-btn">Отправить заявку</button>
+        </div>
+    </form>
+</div>
+<div id="popup" class="popup" style="display: none;">
+    <div class="popup-content">
+        <h2>Спасибо за вашу запись!</h2>
+        <p id="popupMessage"></p>
+        <button class="btn" id="closePopup">Закрыть</button>
+    </div>
+</div>
+
+{% block scripts %}
+<script src="../static/js/issue.js"></script>
+{% endblock %}
+</body>
+</html>

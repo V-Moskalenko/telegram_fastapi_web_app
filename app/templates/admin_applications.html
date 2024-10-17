@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявки пользователей</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="icon" href="data:;base64,=">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    {% block styles %}
+    <link rel="stylesheet" href="../static/css/applications.css">
+    {% endblock %}
+</head>
+<body>
+<div class="container">
+    <img src="../static/company_logo.png" alt="Логотип компании" id="company-logo">
+    <h3>ЗАЯВКИ ПОЛЬЗОВАТЕЛЕЙ</h3>
+
+    {% if message %}
+    <p>{{ message }}</p>
+    {% else %}
+    <!-- Блок заявок "В работе" -->
+    {% if active_applications %}
+    <div class="service-block">
+        <h4>Заявки в работе</h4>
+        {% for application in active_applications %}
+        <div class="application-item">
+            <p><strong>Компания:</strong> {{ application.get('company_name', 'Не указано') }}</p>
+            <p><strong>Статус:</strong> В работе</p>
+            <p><strong>Услуги:</strong></p>
+            <ul>
+                {% for service in application['services'] %}
+                <li>{{ service['training_type'] }}, {{ service['training_program'] }},
+                    {{ service['training_rank'] }} - {{ service['people_count'] }} чел.
+                </li>
+                {% endfor %}
+            </ul>
+            <button class="work-btn" onclick='workOnApplication({{ application | tojson | safe }})'>Отработать</button>
+
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Блок завершенных заявок -->
+    {% if completed_applications %}
+    <div class="service-block-completed">
+        <h4>Архивные заявки</h4>
+        {% for application in completed_applications %}
+        <div class="application-item">
+            <p><strong>Компания:</strong> {{ application.get('company_name', 'Не указано') }}</p>
+            <p><strong>Статус:</strong> {{ application.get('status', 'Не указано') }}</p>
+            <p><strong>Услуги:</strong></p>
+            <ul>
+                {% for service in application.services %}
+                <li>{{ service['training_type'] }}, {{ service['training_program'] }},
+                    {{ service['training_rank'] }} - {{ service['people_count'] }} чел.
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <!-- Кнопка закрыть -->
+    <button class="close-btn" onclick="closeApp()">Закрыть</button>
+</div>
+
+{% block scripts %}
+<script src="../static/js/admin_applications.js"></script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Введите стоимость за обучение</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" href="data:;base64,=">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    {% block styles %}
+    <link rel="stylesheet" href="../static/css/enter_prices.css">
+    {% endblock %}
+</head>
+<body>
+<h3>Введите стоимость за одного человека по каждой программе</h3>
+
+<form action="/submit_prices" method="post">
+    <input type="hidden" name="application_id" value="{{ application['id'] }}">
+
+    {% for service in application['services'] %}
+    <div class="service-block">
+        <label><strong>{{ service['training_type'] }} - {{ service['training_program'] }}:</strong></label>
+        <p>Количество человек: {{ service['people_count'] }}</p>
+        <input type="number" id="price-{{ loop.index0 }}" name="prices[{{ service['id'] }}]"
+               placeholder="Введите стоимость за одного человека" required>
+    </div>
+    {% endfor %}
+    <button type="submit">Отправить</button>
+</form>
+
+<script>
+    window.Telegram.WebApp.ready(); // Инициализация Web App
+
+    // Переданная информация о заявке
+    const applicationData = {{ application | tojson | safe }};
+
+    function submitPrices() {
+        // Собираем введенные цены для каждой услуги
+        applicationData.services.forEach((service, index) => {
+            const input = document.getElementById(`price-${index}`);
+            const price = parseFloat(input.value);
+            if (!isNaN(price)) {
+                service.price = price;  // Добавляем цену в объект услуги
+            }
+        });
+
+        // Проверка: убедитесь, что введены все цены
+        let allPricesEntered = true;
+        applicationData.services.forEach(service => {
+            if (!service.price) {
+                allPricesEntered = false;
+            }
+        });
+
+        if (!allPricesEntered) {
+            alert('Пожалуйста, введите стоимость для всех услуг');
+            return;
+        }
+
+        // Отправляем обновленные данные заявки на сервер
+        fetch('/application_work', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(applicationData)  // Отправляем обновленные данные
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Используем SweetAlert2 для красивого уведомления
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Успех!',
+                        text: 'Заявка успешно обработана!',
+                        confirmButtonColor: '#012e95',
+                    }).then(() => {
+                        // Закрываем Telegram WebApp через 100 мс
+                        setTimeout(() => {
+                            window.Telegram.WebApp.close();
+                        }, 100);
+                    });
+                } else {
+                    alert('Ошибка при обработке заявки');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    }
+
+    // Назначаем обработчик кнопки отправки
+    document.querySelector('button[type="submit"]').addEventListener('click', function (event) {
+        event.preventDefault();  // Останавливаем отправку формы
+        submitPrices();  // Вызываем функцию для отправки данных
+    });
+</script>
+</body>
+</html>

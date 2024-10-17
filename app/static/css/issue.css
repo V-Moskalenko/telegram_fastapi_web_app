@@ -1,0 +1,131 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #131313;
+    color: #ffffff;
+    padding: 20px;
+}
+
+h3 {
+    text-align: center;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px; /* Добавить внутренние отступы */
+    box-sizing: border-box; /* Включить отступы в ширину */
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input, .input-group select {
+    width: 100%; /* Одинаковая ширина */
+    padding: 10px; /* Внутренний отступ */
+    border: none;
+    border-radius: 5px;
+    background-color: #333; /* Цвет фона */
+    color: #ffffff; /* Цвет текста */
+    box-sizing: border-box; /* Важно для учета отступов */
+}
+
+.service-block {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #012e95;
+    border-radius: 5px;
+    max-width: 100%; /* Обеспечить, что блок не превышает ширину контейнера */
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: center; /* Выравнивает элементы по центру */
+    gap: 20px; /* Отступ между кнопками, если их несколько */
+    margin-top: 20px; /* Отступ сверху для отделения кнопок от формы */
+}
+
+.add-service-btn {
+    background-color: #8c190c;
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-service-btn:hover {
+    background-color: #012e95;
+}
+
+.submit-btn {
+    background-color: #8c190c;
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #012e95;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    background-color: #8c190c;
+    color: #ffffff;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #012e95;
+}
+
+.popup-content {
+    border: 5px solid #012e95;
+    border-radius: 10px;
+    padding: 30px;
+    background-color: #1c1c1c;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ширина по содержимому */
+    box-sizing: border-box; /* Учесть padding при вычислении ширины */
+}
+
+.popup {
+    background-color: #1c1c1c;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 1000; /* Убедитесь, что popup выше других элементов */
+    position: fixed; /* Для того, чтобы он был фиксирован */
+    display: none; /* Изначально скрыт */
+    top: 0; /* Центрирование по вертикали */
+    left: 0; /* Центрирование по горизонтали */
+    justify-content: center;
+    align-items: center;
+    /*transform: translate(-50%, -50%); !* Для абсолютного центрирования *!*/
+}
+
+#company-logo {
+    width: 100%; /* Задает ширину логотипа 100% */
+    height: auto; /* Сохраняет пропорции изображения */
+    display: block; /* Убирает нижние пробелы под изображением */
+    margin: 0 auto; /* Центрирует изображение, если нужно */
+}
